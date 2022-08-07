@@ -1,21 +1,23 @@
 import React, {useState} from "react";
 
 const Button = ({text, onClick}) => <button onClick={() => onClick(text)}>{text}</button>
-const StatisticLine = ({text, value}) => <p>{text} {value}</p>
+const StatisticLine = ({text, value}) => <tr><td>{text}</td><td>{value}</td></tr>
 const Statistics = ({good, neutral, bad}) => {
   const total = good+neutral+bad
   const average = (good-bad)/total
   const percentage = good*100/(total)+"%"
 
   return (
-    <div>
-      <StatisticLine text="good" value={good}/>
-      <StatisticLine text="neutral" value={neutral}/>
-      <StatisticLine text="bad" value={bad}/>
-      <StatisticLine text="total" value={total}/>
-      <StatisticLine text="average" value={average}/>
-      <StatisticLine text="positive" value={percentage}/>
-    </div>
+    <table>
+      <tbody>
+        <StatisticLine text="good" value={good}/>
+        <StatisticLine text="neutral" value={neutral}/>
+        <StatisticLine text="bad" value={bad}/>
+        <StatisticLine text="total" value={total}/>
+        <StatisticLine text="average" value={average}/>
+        <StatisticLine text="positive" value={percentage}/>
+      </tbody>
+    </table>
   )
 }
 
