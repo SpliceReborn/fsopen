@@ -5,6 +5,9 @@ function App() {
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
 
+  const total = good+neutral+bad
+  const atLeastOneVote = good || neutral || bad
+
   return (  
     <div>
       <h2>give feedback</h2>
@@ -15,7 +18,10 @@ function App() {
       <p> 
         good {good} <br/> 
         neutral {neutral}<br/>
-        bad {bad}
+        bad {bad} <br/>
+        total {total} <br/>
+        average {atLeastOneVote ? (good-bad)/(total) : "-"} <br/>
+        postive {atLeastOneVote ? good/(total)+" %" : "-"}
       </p>
     </div>
   );
