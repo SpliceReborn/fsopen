@@ -12,7 +12,7 @@ const Statistics = ({good, neutral, bad}) => {
       bad {bad} <br/>
       total {total} <br/>
       average {atLeastOneVote ? (good-bad)/(total) : "-"} <br/>
-      postive {atLeastOneVote ? good/(total)+" %" : "-"}
+      postive {atLeastOneVote ? good*100/(total)+" %" : "-"}
     </p>
   )
 }
