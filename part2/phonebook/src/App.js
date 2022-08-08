@@ -1,5 +1,40 @@
 import { useState } from 'react'
 
+const Filter = ({filterWord, handleChange}) => (
+  <p>
+    filter shown with <input name="filter" value={filterWord} onChange={handleChange}/>
+  </p>
+)
+
+const PersonForm = ({addName, newName, newNumber, handleChange}) => {
+  return (
+    <form onSubmit={addName}>
+      <div>
+        name: <input name="name" value={newName} onChange={handleChange}/>
+      </div>
+      <div>
+        number: <input name="number" value={newNumber} onChange={handleChange}/>
+      </div>
+      <div>
+        <button>add</button>
+      </div>
+    </form>
+  )
+}
+
+const Persons = ({filterWord, persons}) => {
+  const filtered = persons.filter(person =>
+    person.name.toLowerCase().includes(filterWord)
+  )
+
+  {return filterWord === '' ? 
+    persons.map(person => <Person key={person.id} name={person.name} number={person.number} />) :  
+    filtered.map(person => <Person key={person.id} name={person.name} number={person.number} />)
+  }
+}
+
+const Person = ({name, number}) => <p>{name} {number}</p>
+
 const App = () => {
   const [persons, setPersons] = useState([
     { name: 'Arto Hellas', number: '040-1234567', id: 1},
@@ -44,31 +79,16 @@ const App = () => {
 
   }
 
-  const filtered = persons.filter(person =>
-    person.name.toLowerCase().includes(filterWord)
-  )
-
   return (
     <div>
       <h2>Phonebook</h2>
-      <p>filter shown with <input name="filter" value={filterWord} onChange={handleChange}/></p>
-      <h2>Add new record</h2>
-      <form onSubmit={addName}>
-        <div>
-          name: <input name="name" value={newName} onChange={handleChange}/>
-        </div>
-        <div>
-          number: <input name="number" value={newNumber} onChange={handleChange}/>
-        </div>
-        <div>
-          <button>add</button>
-        </div>
-      </form>
-      <h2>Numbers</h2>
-      {filterWord === '' ? 
-        persons.map(person => <p key={person.id}>{person.name} {person.number}</p>) :  
-        filtered.map(person => <p key={person.id}>{person.name} {person.number}</p>)
-      }
+      <Filter filterWord={filterWord} handleChange={handleChange}/>
+
+      <h3>Add new record</h3>
+      <PersonForm addName={addName} newName={newName} newNumber={newNumber} handleChange={handleChange}/>
+
+      <h3>Numbers</h3>
+      <Persons filterWord={filterWord} persons={persons} />
     </div>
   )
 }
