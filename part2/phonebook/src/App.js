@@ -58,22 +58,22 @@ const App = () => {
 
   function addName(event) {
     event.preventDefault()
-    let nameAlreadyExists = false
-    persons.forEach(person => {
-      if (person.name === newName) {
-        nameAlreadyExists = true
-      }
-    })
-    if (nameAlreadyExists) {
+    let nameExists = !!persons.find(p => 
+                        p.name.toLowerCase() === newName.toLowerCase()
+                      )
+    if(nameExists) {
       alert(`${newName} is already added to phonebook`)
       setNewName('')
     } else {
       const newPerson = {
         name: newName,
         number: newNumber,
-        id: persons.length + 1
       }
-      setPersons(persons.concat(newPerson))
+      axios
+        .post('http://localhost:3001/persons', newPerson)
+        .then(response => {
+          setPersons(persons.concat(response.data))
+        })
       setNewName('')
       setNewNumber('')
     }
