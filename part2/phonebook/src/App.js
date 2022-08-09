@@ -23,17 +23,33 @@ const PersonForm = ({addName, newName, newNumber, handleChange}) => {
   )
 }
 
-const Persons = ({filterWord, persons}) => {
+const Persons = ({filterWord, persons, handleDelete}) => {
   const filtered = persons.filter(person =>
     person.name.toLowerCase().includes(filterWord)
   )
 
-  return filterWord === '' ? 
-    persons.map(person => <Person key={person.id} name={person.name} number={person.number} />) :  
-    filtered.map(person => <Person key={person.id} name={person.name} number={person.number} />)
+  let copy = []
+  filterWord === '' ? copy = [...persons] : copy = [...filtered]
+
+  return copy.map(person => 
+    <Person 
+      key={person.id} 
+      name={person.name} 
+      number={person.number} 
+      onDelete={() => handleDelete(person.id)}
+    />) 
 }
 
-const Person = ({name, number}) => <p>{name} {number}</p>
+const Person = ({name, number, onDelete}) => {
+  function handleClick() {
+    if (window.confirm(`Delete ${name}?`))
+      onDelete()
+  }
+  
+  return (
+    <p>{name} {number} <button onClick={handleClick}>delete</button></p>
+  )
+}
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
@@ -77,6 +93,14 @@ const App = () => {
     }
   }
 
+  function handleDelete(id) {
+    personService
+      .remove(id)
+      .then(() => {
+        setPersons(persons.filter(p => p.id !== id))
+      })
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -86,7 +110,7 @@ const App = () => {
       <PersonForm addName={addName} newName={newName} newNumber={newNumber} handleChange={handleChange}/>
 
       <h3>Numbers</h3>
-      <Persons filterWord={filterWord} persons={persons} />
+      <Persons filterWord={filterWord} persons={persons} handleDelete={handleDelete}/>
     </div>
   )
 }
