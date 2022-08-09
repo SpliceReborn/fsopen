@@ -51,11 +51,34 @@ const Person = ({name, number, onDelete}) => {
   )
 }
 
+const Notification = ({message}) => {
+  const success = message.type==="successful"
+  const style = {
+    width: "100%",
+    fontSize: 20,
+    borderStyle: "solid",
+    borderWidth: "3px",
+    background: "lightgrey",
+    padding: "10px",
+    color: `${success ? "green" : "red"}`,
+    borderColor: `${success ? "green" : "red"}`
+  }
+  return (
+    <div style={style}>
+      {message.content}
+    </div>
+  )
+}
+
 const App = () => {
   const [persons, setPersons] = useState([]) 
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filterWord, setFilterWord] = useState('')
+  const [message, setMessage] = useState({
+    content: "",
+    type: ""
+  })
 
   useEffect(() => {
     personService
@@ -87,6 +110,11 @@ const App = () => {
           .then(updatedPerson => {
             setPersons(persons.map(p => p.id === personToUpdate.id ? updatedPerson : p))
           })
+        setMessage({
+          content: `Number for ${newName} replaced to ${newNumber}`,
+          type: 'successful'
+        })
+        setTimeout(() => setMessage({content: "", type: ""}), 3000)
       }
       setNewName('')
       setNewNumber('')
@@ -98,6 +126,11 @@ const App = () => {
       personService
         .add(newPerson)
         .then(person => setPersons(persons.concat(person)))
+      setMessage({
+        content: `Added ${newName}`,
+        type: 'successful'
+      })
+      setTimeout(() => setMessage({content: "", type: ""}), 3000)
       setNewName('')
       setNewNumber('')
     }
@@ -115,7 +148,7 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
       <Filter filterWord={filterWord} handleChange={handleChange}/>
-
+      {message.content !== '' && <Notification message={message}/> }
       <h3>Add new record</h3>
       <PersonForm addName={addName} newName={newName} newNumber={newNumber} handleChange={handleChange}/>
 
