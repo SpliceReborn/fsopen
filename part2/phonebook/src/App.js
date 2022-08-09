@@ -78,8 +78,18 @@ const App = () => {
                         p.name.toLowerCase() === newName.toLowerCase()
                       )
     if(nameExists) {
-      alert(`${newName} is already added to phonebook`)
+      const replace = window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)
+      if (replace) {
+        const personToUpdate = persons.filter(p => p.name.toLowerCase() === newName.toLowerCase())[0]
+        personToUpdate.number = newNumber
+        personService
+          .update(personToUpdate.id, personToUpdate)
+          .then(updatedPerson => {
+            setPersons(persons.map(p => p.id === personToUpdate.id ? updatedPerson : p))
+          })
+      }
       setNewName('')
+      setNewNumber('')
     } else {
       const newPerson = {
         name: newName,
