@@ -95,6 +95,29 @@ const App = () => {
       setFilterWord(event.target.value)
   }
 
+  function replaceName() {
+    const personToUpdate = persons.filter(p => p.name.toLowerCase() === newName.toLowerCase())[0]
+    personToUpdate.number = newNumber
+    personService
+      .update(personToUpdate.id, personToUpdate)
+      .then(updatedPerson => {
+        setPersons(persons.map(p => p.id === personToUpdate.id ? updatedPerson : p))
+      })
+      .catch(() => {
+        setMessage({
+          content: `Information of ${newName} has already been removed from server`, 
+          type: 'error'
+        })
+        setTimeout(() => setMessage({content: "", type: ""}), 3000)
+        setPersons(persons.filter(p => p.id !== personToUpdate.id))
+      })
+    setMessage({
+      content: `Number for ${newName} replaced to ${newNumber}`,
+      type: 'successful'
+    })
+    setTimeout(() => setMessage({content: "", type: ""}), 3000)
+  }
+
   function addName(event) {
     event.preventDefault()
     let nameExists = !!persons.find(p => 
@@ -102,20 +125,7 @@ const App = () => {
                       )
     if(nameExists) {
       const replace = window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)
-      if (replace) {
-        const personToUpdate = persons.filter(p => p.name.toLowerCase() === newName.toLowerCase())[0]
-        personToUpdate.number = newNumber
-        personService
-          .update(personToUpdate.id, personToUpdate)
-          .then(updatedPerson => {
-            setPersons(persons.map(p => p.id === personToUpdate.id ? updatedPerson : p))
-          })
-        setMessage({
-          content: `Number for ${newName} replaced to ${newNumber}`,
-          type: 'successful'
-        })
-        setTimeout(() => setMessage({content: "", type: ""}), 3000)
-      }
+      if (replace) replaceName()
       setNewName('')
       setNewNumber('')
     } else {

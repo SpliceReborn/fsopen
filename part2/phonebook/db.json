@@ -1,29 +1,9 @@
 {
   "persons": [
     {
-      "name": "Arto Hellas",
-      "number": "40-123456",
-      "id": 1
-    },
-    {
-      "name": "Ada Lovelace",
-      "number": "39-44-5323523",
-      "id": 2
-    },
-    {
-      "name": "Dan Abramov",
-      "number": "12-43-234345",
-      "id": 3
-    },
-    {
       "name": "Mary Poppendieck",
       "number": "39-23-6423122",
       "id": 4
-    },
-    {
-      "name": "Darren Seet",
-      "number": "121-12123",
-      "id": 5
     },
     {
       "name": "Mohammed",
@@ -31,19 +11,9 @@
       "id": 6
     },
     {
-      "name": "Test",
-      "number": "2",
-      "id": 7
-    },
-    {
-      "name": "Darren ",
-      "number": "201-201",
+      "name": "Test 2",
+      "number": "91023",
       "id": 8
-    },
-    {
-      "name": "Wei Shen Darren Seet",
-      "number": "441",
-      "id": 9
     }
   ]
 }
